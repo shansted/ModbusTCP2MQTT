@@ -30,7 +30,7 @@ full_cmd_arguments = sys.argv
 argument_list = full_cmd_arguments[1:]
 short_options = 'h:p:o:t:s:c:m:l:L:M:P:U:A'
 long_options = ['host=','port=','model=','timeout=','scan=','connection=','meter=','level=','log_level=',
-                'mqtt_host=', 'mqtt_port=','mqtt_user=', 'mqtt_pass=']
+                'mqtt_host=', 'mqtt_port=','mqtt_user=', 'mqtt_pass=', 'configfile=']
 
 def level(l):
     switcher={
@@ -75,6 +75,8 @@ for current_argument, current_value in arguments:
         options['exports'][0]['port'] = int(current_value)
     elif current_argument in ("-U", "--mqtt_user"):
         options['exports'][0]['username'] = current_value 
+    elif current_argument in ("-A", "--mqtt_pass"):
+        options['exports'][0]['password'] = current_value 
     elif current_argument in ("-A", "--mqtt_pass"):
         options['exports'][0]['password'] = current_value 
 

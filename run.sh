@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bashio
 
 HOST=$(bashio::config 'Inverter_host')
+HOST2=$(bashio::config 'Inverter_host2')
 PORT=$(bashio::config 'Inverter_port')
 MODEL=$(bashio::config 'Inverter_model')
 SCAN_INTERVAL=$(bashio::config 'Scan_interval')
@@ -18,7 +19,7 @@ MQTT_PASS=$(bashio::config 'Mqtt_pass')
 if ! bashio::services.available "mqtt"; then
    bashio::exit.nok "No internal MQTT Broker found. Please install Mosquitto broker."
 else
-    MQTT_HOST=$(bashio::services mqtt "host")
+    MQTT_HOST=$(bashio::services mqtt "host2")
     MQTT_PORT=$(bashio::services mqtt "port")
     MQTT_USER=$(bashio::services mqtt "username")
     MQTT_PASS=$(bashio::services mqtt "password")
@@ -26,4 +27,8 @@ else
 fi
 python3 /config_generator.py --host=$HOST --port=$PORT --model=$MODEL --mqtt_host=$MQTT_HOST --mqtt_port=$MQTT_PORT --mqtt_user=$MQTT_USER --mqtt_pass=$MQTT_PASS --scan=$SCAN_INTERVAL --timeout=$SCAN_TIMEOUT --connection=$CONNECTION --meter=$SMART_METER --level=$LEVEL --log_level=$LOG_LEVEL
 bashio::log.info "Generated config file."
-exec python3 /sungather.py -c config.sg
+
+python3 /config_generator.py --host=$HOST2 --port=$PORT --model=$MODEL + "-2" --mqtt_host=$MQTT_HOST --mqtt_port=$MQTT_PORT --mqtt_user=$MQTT_USER --mqtt_pass=$MQTT_PASS --scan=$SCAN_INTERVAL --timeout=$SCAN_TIMEOUT --connection=$CONNECTION --meter="false""--level=$LEVEL --log_level=$LOG_LEVEL
+bashio::log.info "Generated config file."
+
+exec bash -c "python3 /sungather.py -c config.sg" ; "python3 /sungather.py -c config2.sg"

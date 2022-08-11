@@ -16,6 +16,7 @@ services:
   - "mqtt:need"
 options: 
   Inverter_host: ""
+  Inverter_host2: ""
   Inverter_port: 502
   Inverter_model: ""
   Smart_meter: false
